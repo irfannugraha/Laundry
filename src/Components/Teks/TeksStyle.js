@@ -1,19 +1,19 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-  containerStyle: {
-    borderBottomWidth: 1,
-    borderBottomColor: 'black',
+  styleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-  iconStyle: {
-    height: 17.5,
-    width: 17.5,
-    marginHorizontal: 10,
+  labelStyle: {
+    fontSize: 17,
+    textAlignVertical: 'center',
+    flex: 1,
+    color: 'dimgray',
   },
-  pickerStyle: {
+  ketStyle: {
     flex: 1,
     marginStart: 10,
+    alignItems: 'flex-end',
   },
 })

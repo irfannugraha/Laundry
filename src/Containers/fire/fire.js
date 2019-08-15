@@ -23,29 +23,52 @@ export default class fire extends Component {
       numbers: [],
       message: '',
       messages: [],
+      stores: '',
+      id: 0,
     }
 
     this.addItem = this.addItem.bind(this);
   }
 
   componentDidMount() {
-    firebase.database().ref(). ("user").on("value", snapshot => {
-        const data = snapshot.val()
-        if (snapshot.val()) {
-          const initMessages = [];
-          Object.keys(data).forEach(message => initMessages.push(data[message]));
-          this.setState({
-            messages: initMessages
-          })
-        }
-      });
+    var ref = firebase.database().ref("user/fpK8tTiJ3xegDVOMAikbVTKWyPr2/pesan");
+    ref.orderByChild("id").equalTo(2).on("child_added", snapshot => {
+      // alert(snapshot.key);
+      
+      const data = snapshot.val()
+      const init = []
+      Object.keys(data).forEach(item => init.push(data[item]));
+      this.setState({
+        messages: init
+      })
+      alert(this.state.messages[2])
+    });    
+    // firebase.database().ref().child("pesan").on("child_added", snapshot => {
+        // const data = snapshot.val()
+        // if (snapshot.val()) {
+        //   const initMessages = [];
+        //   Object.keys(data).forEach(message => initMessages.push(data[message]));
+        //   this.setState({
+        //     messages: initMessages
+        //   })
+        // }
+    //     alert(snapshot.key);
+    //   });
   }
 
   addItem () {
-    if (!this.state.number) return;
-
-    const newNumber = firebase.database().ref().child("pesan/numba").push();
-    newNumber.set(this.state.number, () => this.setState({number: ''}))
+    
+    const newNumber = firebase.database().ref().child("pesan");
+    newNumber.push({
+        id: this.state.id+1,
+        message: this.state.message,
+        number: this.state.number,
+    })
+    this.setState({
+      id: this.state.id+1,
+      message: '',
+      number: '',
+    })
   }
 
   render() {
@@ -66,10 +89,10 @@ export default class fire extends Component {
         </View>
 
         <Button title='Send' onPress={this.addItem}/>
-        <Button title='Delete' onPress={this.deleteItem}/>
+        {/* <Button title='Delete' onPress={this.deleteItem}/> */}
 
         <Text>
-          {this.state.messages[1]}
+          {this.state.stores}
         </Text>
         {/* <FlatList data={this.state.messages}
           renderItem={

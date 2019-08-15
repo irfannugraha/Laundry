@@ -1,24 +1,13 @@
 import React, { Component } from 'react';
 import { Text, ScrollView, View} from 'react-native';
 import styles from './tungguKonfirmasiStyle';
-import Input from '../../Components/Input/Input';
-import DropDown from '../../Components/Drop down/DropDown';
 import Button from '../../Components/Button/Button';
-import Paragraph from '../../Components/Paragraph/Paragraph';
+import firebase from 'firebase';
 
 class tungguKonfirmasi extends Component{
 
   static navigationOptions = {  
     title: 'Cuci Baju',
-    
-    headerStyle: {
-      backgroundColor: 'white',
-    },
-    headerTitleStyle: {
-      color: 'orange',
-      textAlign: 'center',
-      flex: 1,
-    },
   }
 
   constructor() {
@@ -30,6 +19,10 @@ class tungguKonfirmasi extends Component{
         'Hutang',
       ],
     }
+  }
+
+  componentDidMount(){
+    firebase.database().ref('user/' + firebase.auth().currentUser.uid + '/bio/status').update({ket: 'konfirmasi'})
   }
 
   render() {
@@ -45,7 +38,11 @@ class tungguKonfirmasi extends Component{
             Silahkan tunggu konfirmasi dari kami
           </Text>
         </View>
-        <Button moreStyle={{height: 70}} label='Home' />
+        <Button 
+          moreStyle={{height: 50}} 
+          label='Home' 
+          onPress={() => this.props.navigation.navigate('landingPage')}
+        />
       </View>
     );
   }

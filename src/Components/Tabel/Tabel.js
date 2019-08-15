@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {FlatList, Animated, Text, ScrollView, View} from 'react-native';
 import Style from './TabelStyles';
 
-const { styleContainer, styleChildContainer, textStytle, textFlatStytle, flatHeaderStyle, flatHeaderChildStyle, flatContainerChildStyle,  flatContainerStyle } = Style;
+const { styleContainer, textFlatStytle, flatHeaderStyle, flatHeaderChildStyle, flatContainerChildStyle,  flatContainerStyle } = Style;
 
 export default class Paragraph extends Component{
 
@@ -10,31 +10,24 @@ export default class Paragraph extends Component{
       super()
       this.state = {
           header: [{key: 'no'}],
-          headerData: [['Jenis Pakaian', 'Jumlah']],
+          headerData: ['Jenis Pakaian', 'Jumlah'],
 
-          data: [
-            ['celana', 10,],
-            ['baju', 5,],
-            ['topi', 1,],
-            ['kaos kaki', 3,],
-            ['celana dalam', 20],
-            ['sarung', 20],
-            ['celana', 10,],
-            ['baju', 5,],
-            ['topi', 1,],
-            ['kaos kaki', 3,],
-            ['celana dalam', 20],
-            ['sarung', 20],
+          ket: [
+            'atasan',
+            'bawahan',
+            'alas kaki',
+            'headwear',
+            'lainya',
+            'pakaian dalam',
           ],
+          
           totalKg: '10',
           harga: '50000',
           item: [],
       }
-
-      for (var index = 0; index < this.state.data.length; index++) {
+      for (var index = 0; index < this.state.ket.length; index++) {
         this.state.item.push({key: index.toString()});
       }
-
   }
 
   renderHeader = ({}) => {
@@ -60,6 +53,7 @@ export default class Paragraph extends Component{
   }
 
   renderItem = ({item}) => {
+    const { data } = this.props;
     return (
       <View style={[flatContainerStyle, {
         backgroundColor: ( item.key%2 ) == 0 ?
@@ -74,12 +68,12 @@ export default class Paragraph extends Component{
         </View>
         <View style={[flatContainerChildStyle, {flex: 3.5}]}>
           <Text style={[textFlatStytle, {alignSelf: 'flex-start'}]}>
-            {this.state.data[item.key][0]}
+            {this.state.ket[item.key]}
           </Text>
         </View>
         <View style={[flatContainerChildStyle, {flex: 1}]}>
           <Text style={textFlatStytle}>
-            {this.state.data[item.key][1]}
+            {data[item.key]}
           </Text>
         </View>
       </View>
@@ -87,7 +81,7 @@ export default class Paragraph extends Component{
   }
 
   render(){
-    const { label, moreStyle } = this.props;
+    const { moreStyle } = this.props;
 
     return (
       <View style={[styleContainer, moreStyle]}>
@@ -97,7 +91,7 @@ export default class Paragraph extends Component{
             renderItem={this.renderItem}
             ListHeaderComponent={this.renderHeader}
             stickyHeaderIndices={[0]}
-            style={{borderBottomWidth: 1}}
+            style={{}}
           />
         </View>
 
@@ -107,5 +101,6 @@ export default class Paragraph extends Component{
 }
 
 Paragraph.defaultProps = {
-  label: 'im a text'
+  label: 'im a text',
+  data: null,
 };

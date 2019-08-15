@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 import styles from './pembayaranStyles';
 import Input from '../../Components/Input/Input';
 import Button from '../../Components/Button/Button';
-import Paragraph from '../../Components/Paragraph/Paragraph';
+import firebase from 'firebase';
 import Table from '../../Components/Tabel/Tabel';
 import Switches from  '../../Components/Switches/Switches';
 
@@ -11,15 +11,6 @@ class pembayaran extends Component{
 
   static navigationOptions = {  
     title: 'Pembayaran',
-    
-    headerStyle: {
-      backgroundColor: 'white',
-    },
-    headerTitleStyle: {
-      color: 'orange',
-      textAlign: 'center',
-      flex: 1,
-    },
   }
 
   constructor() {
@@ -27,21 +18,28 @@ class pembayaran extends Component{
     this.state = {
       cara_pembayaran: 'CASH',
       coupon: '',
-      label: [
-        "1. Kemeja Panjang (5)",
-        "2. Kemeja Pendek (4)",
-        "3. Jaket (10)",
-        "4. Kaos (1)",
-        "5. Celana Panjang (100)",
-        "6. Celana Pendek (5)",
-        "7. Kerudung (0)",
-        "8. Handuk (1)",
-        "9. Sperai (1)",
-        "10. Selimut (5)"
-      ],
-      duit: 50000,
-      totalKg: '10',
+      jumlah: [''],
+      harga: 0,
+      berat: 0,
     }
+  }
+
+  componentDidMount(){
+    let val;
+    firebase.database().ref('user/' + firebase.auth().currentUser.uid + '/bio/status/idActive').on('value', snapshot => {
+      val = snapshot.val();
+    })
+
+    firebase.database().ref('user/'+ firebase.auth().currentUser.uid + '/pesan').orderByChild('id').equalTo( val ).once('child_added', snapshot => {
+      const data = snapshot.val().pakaian;
+      const init = []
+      Object.keys(data).forEach(item => init.push(data[item]));
+      this.setState({
+        harga: snapshot.val().harga,
+        berat: snapshot.val().berat,
+        jumlah: init,
+      })
+    });
   }
 
   onPress() {
@@ -61,7 +59,8 @@ class pembayaran extends Component{
     return (
       <View style={{flex: 1}}>
         <Table
-          moreStyle={{flex: 2, borderWidth: 1, borderColor: 'gainsboro'}}
+          data={this.state.jumlah}
+          moreStyle={{height: 250, borderWidth: 1, borderColor: 'gainsboro'}}
         />
         <View style={{flex: 1}}>
           <View style={{height: 40, alignItems: 'center'}}>
@@ -86,10 +85,10 @@ class pembayaran extends Component{
             <Text style={{fontSize: 20}}>
               {'Rp '}
               <Text>
-                {this.state.duit.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.") }
-                {' / '}
+                {this.state.harga.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.") }
+                {' / '} 
                 <Text style={{color: 'orange', fontSize: 15}}>
-                  {this.state.totalKg + 'kg'}
+                  {this.state.berat + 'kg'}
                 </Text>
               </Text>
             </Text>

@@ -6,18 +6,20 @@ export default StyleSheet.create({
     flex: 1,
   },
   containerChild: {
-    paddingBottom: 35,
-    backgroundColor: 'white',
+    paddingBottom: 20,
     
     borderBottomWidth: 5,
     borderBottomColor: 'gainsboro',
   },
+
   inputStyle: {
-    marginTop: 20,
+    borderBottomWidth: 1,
+    marginTop: 10,
     marginHorizontal: 20,
   },
+
   buttonContainerStyle: {
-    height: 70,
+    height: 50,
     justifyContent: "center",
   },
 });

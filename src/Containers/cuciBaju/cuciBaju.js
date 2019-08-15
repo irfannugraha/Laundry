@@ -1,47 +1,27 @@
 import React, { Component } from 'react';
-import { ListView, Text, ScrollView, View} from 'react-native';
+import { YellowBox, ScrollView, View} from 'react-native';
 import firebase from 'firebase';
 import styles from './cuciBajuStyles';
+import Loader from '../../Components/LoadingScreen/loading';
 import Input from '../../Components/Input/Input';
 import DropDown from '../../Components/Drop down/DropDown';
 import Button from '../../Components/Button/Button';
-import LoginUser from '../LoginUser/LoginUser';
-import { TouchableHighlight } from 'react-native-gesture-handler';
 import propTypes from 'prop-types';
 
 export default class cuciBaju extends Component{
 
   static navigationOptions = {  
     title: 'Cuci Baju',
-    
-    headerStyle: {
-      backgroundColor: 'white',
-    },
-    headerTitleStyle: {
-      color: 'orange',
-      textAlign: 'center',
-      flex: 1,
-    },
-  }
-
-  static propTypes = {
-    onValueChange: propTypes.func,
-  };
-  static defaultProps = {
-    onValueChange: () => 'null',
   }
 
   constructor() {
+    YellowBox.ignoreWarnings(['Setting a timer']);
     super();
-    console.ignoredYellowBox = ['Setting a timer'];
     this.state = {
-      email: 'koko@gmail.com',
-      pass: 'kokoko',
-      error: 'null',
-      uid: '',
-      user: ['kosong'],
+      user: firebase.database().ref('user/'+ firebase.auth().currentUser.uid),
       loading: false,
 
+      id: 0,
       nama: '',
       alamat: '',
       no_hp: '',
@@ -50,6 +30,7 @@ export default class cuciBaju extends Component{
       lama_pengiriman: '',
       keterangan: '',
       tanggal_pencucian: '',
+      pesan: [],
 
       layananData: [
         'Diantar', 'Ambil Sendiri'
@@ -65,51 +46,40 @@ export default class cuciBaju extends Component{
   }
 
   componentDidMount() {
-    const {
-      email= this.state.email,
-      password= this.state.pass,
-    } = this.state;
+    this.state.user.child('/bio').once('value', snapshot => {
+      const data = snapshot.val()
+      this.setState({
+        nama: data.nama,
+        alamat: data.alamat,
+        no_hp: data.noHp,
 
-    const config = {
-      apiKey: "AIzaSyBnN2dJVRucHmMuyV4MPybhehTR7vo4_74",
-      authDomain: "laundry-69.firebaseapp.com",
-      databaseURL: "https://laundry-69.firebaseio.com",
-      projectId: "laundry-69",
-      storageBucket: "",
-      messagingSenderId: "80891738612",
-      appId: "1:80891738612:web:e852eac34519ce37"
-    };
-    firebase.initializeApp(config);
+        loading: false,
+      })
+    })
 
-    this.setState({ error: '', loading: true });
+    this.state.user.child('/pesan').orderByChild("id").limitToLast(1).once('child_added', snapshot => {
+      const data = snapshot.val()
+      this.setState({
+        id: data.id,
 
-    firebase.auth().signInWithEmailAndPassword(email, password)
-      .then(this.onLoginSuccess.bind(this))
-      .catch(this.onLoginFail.bind(this));
-  }
-  
-  onLoginFail() {
-    this.setState({ error: 'Log In Failed', loading: false });
-  }
-  
-  onLoginSuccess() {
-    this.setState({ error: 'Log In Sukses', loading: false });
-
-    const user = firebase.auth().currentUser;
-    this.setState({uid: user.uid});
+        loading: false,
+      })
+    })
   }
 
   submit() {
     const { nama, alamat, no_hp, parfum, jenis_layanan, lama_pengiriman, keterangan } = this.state;
     this.setState({ error: '', loading: true });
 
-    if(nama== '' || nama== '' || alamat== '' || no_hp== '' || parfum== '' || jenis_layanan== '' || lama_pengiriman== '' || keterangan== '' )
+    const list = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des']
+    
+    if(nama== '' || nama== '' || alamat== '' || no_hp== '' || parfum== '' || jenis_layanan== '' || lama_pengiriman== '')
     {
       alert('lengkapi dokumen');
+      this.setState({loading: false});
     }else{
-      const newUser = firebase.database().ref().child('user/' + this.state.uid + '/pesan').push();
-
-      newUser.set({
+      this.state.user.child('/pesan').push({
+        id: this.state.id+1,
         nama: nama,
         alamat: alamat, 
         no_hp: no_hp,
@@ -117,95 +87,118 @@ export default class cuciBaju extends Component{
         jenis_layanan: jenis_layanan,
         lama_pengiriman: lama_pengiriman,
         keterangan: keterangan,
-        tanggal_pencucian: new Date().toLocaleString(),
+        tanggal_masuk: new Date().getDate() + ' ' + list[new Date().getMonth()] + ' ' + new Date().getFullYear() + ', ' + new Date().getHours() + ':' + new Date().getMinutes() + ' WIB',
+        berat: '',
+        harga: '',
+        tanggal_keluar: '',
+        pakaian: {
+          atasan: 0,
+          bawahan: 0,
+          footwear: 0,
+          headweat: 0,
+          underwear: 0,
+          lainya: 0,
+        }
       });
-      this.props.navigation.navigate('driverBrangkat');
-      this.setState({
-        nama: '',
-        alamat: '',
-        no_hp: '',
-        parfum: '',
-        jenis_layanan: '',
-        lama_pengiriman: '',
-        keterangan: '',
+      this.state.user.child('/bio').update({
+        status: {
+          idActive: this.state.id, 
+          ket: "driver"
+        }
       })
+      this.props.navigation.navigate('driverBrangkat'); 
     }
-    this.setState({ error: '', loading: false });
   }
 
   render() {
     const { buttonContainerStyle, inputStyle, containerChild, container } = styles;
-
-    return (
-      <View style={{flex: 1}}>
-        <ScrollView style={container}>
-          <View style={containerChild}>
-            <Input moreStyle={inputStyle}
-              maxLength={50} 
-              placeholder={'Nama'} 
-              label={'Nama'}
-              value={this.state.nama}
-              onChangeText={(nama) => this.setState({nama})}
+    if (this.state.loading == true) {
+      return(
+        <Loader/>
+      )
+    }else{
+      return (
+        <View style={{flex: 1}}>
+          <ScrollView style={container}>
+            <View style={containerChild}>
+              <Input moreStyle={inputStyle}
+                maxLength={50} 
+                placeholder={'Nama'} 
+                label={'Nama'}
+                value={this.state.nama}
+                onChangeText={(nama) => this.setState({nama})}
+                iconSource={require('../../icon/user.png')}
               />
-            <Input moreStyle={inputStyle} 
-              maxLength={200} 
-              placeholder={'Alamat'} 
-              label={'Alamat'} 
-              multiline={true}
-              value={this.state.alamat}
-              onChangeText={(alamat) => this.setState({alamat})}
-            />
-            <Input moreStyle={inputStyle} 
-              maxLength={200} 
-              placeholder={'Nomor Hp'} 
-              label={'Nomor HP'} 
-              value={this.state.no_hp} 
-              onChangeText={(no_hp) => this.setState({no_hp})}
+              <Input moreStyle={inputStyle} 
+                maxLength={200} 
+                placeholder={'Alamat'} 
+                label={'Alamat'} 
+                multiline={true}
+                value={this.state.alamat}
+                onChangeText={(alamat) => this.setState({alamat})}
+                iconSource={require('../../icon/pin.png')}
+              />
+              <Input moreStyle={inputStyle} 
+                maxLength={200} 
+                placeholder={'Nomor Hp'} 
+                label={'Nomor HP'} 
+                value={this.state.no_hp} 
+                onChangeText={(no_hp) => this.setState({no_hp})}
+                iconSource={require('../../icon/telephone.png')}
+              />
+            </View>
+            <View style={containerChild}>
+              <DropDown moreStyle={inputStyle} 
+                data={this.state.layananData} 
+                placeholder={'Jenis Layanan'} 
+                label={'Jenis Layanan'}
+                selectedValue={this.state.jenis_layanan}
+                onValueChange={(item) => this.setState({jenis_layanan: item})}
+                iconSource={require('../../icon/information.png')}
+              />  
+              <DropDown moreStyle={inputStyle} 
+                data={this.state.durasiData} 
+                placeholder={'Lama Pengiriman'} 
+                label={'Lama Pengiriman'}
+                selectedValue={this.state.lama_pengiriman}
+                onValueChange={(item) => this.setState({lama_pengiriman: item})}
+                iconSource={require('../../icon/calendar.png')}
+              />
+              <DropDown moreStyle={inputStyle} 
+                data={this.state.parfumData} 
+                placeholder={'Parfum'} 
+                label={'Parfumn'}
+                selectedValue={this.state.parfum}
+                onValueChange={(item) => this.setState({parfum: item})}
+                iconSource={require('../../icon/perfume.png')}
+              />
+            </View>
+            <View style={[containerChild, {borderBottomWidth: 0}]}>
+              <Input moreStyle={inputStyle} 
+                maxLength={200} 
+                placeholder={'Keterangan'} 
+                label={'Keterangan'} 
+                multiline={true}
+                value={this.state.keterangan}
+                onChangeText={(keterangan) => this.setState({keterangan})}  
+                iconSource={require('../../icon/note.png')}
+              />
+            </View>
+          </ScrollView>
+          <View style={buttonContainerStyle}>
+            <Button onPress={ () => this.submit() } 
+              label={"SUBMIT"}
             />
           </View>
-          <View style={containerChild}>
-            <DropDown moreStyle={inputStyle} 
-              data={this.state.layananData} 
-              placeholder={'Jenis Layanan'} 
-              label={'Jenis Layanan'}
-              placeHolder={'jenis layanan'}
-              selectedValue={this.state.jenis_layanan}
-              onValueChange={(item) => this.setState({jenis_layanan: item})}
-            />  
-            <DropDown moreStyle={inputStyle} 
-              data={this.state.durasiData} 
-              placeholder={'Lama Pengiriman'} 
-              label={'Lama Pengiriman'}
-              placeHolder={'Lama Pengiriman'}
-              selectedValue={this.state.lama_pengiriman}
-              onValueChange={(item) => this.setState({lama_pengiriman: item})}
-            />
-            <DropDown moreStyle={inputStyle} 
-              data={this.state.parfumData} 
-              placeholder={'Parfum'} 
-              label={'Parfumn'}
-              placeHolder={'Parfumn'}
-              selectedValue={this.state.parfum}
-              onValueChange={(item) => this.setState({parfum: item})}
-            />
-          </View>
-          <View style={containerChild}>
-            <Input moreStyle={inputStyle} 
-              maxLength={200} 
-              placeholder={'Keterangan'} 
-              label={'Keterangan'} 
-              multiline={true}
-              value={this.state.keterangan}
-              onChangeText={(keterangan) => this.setState({keterangan})}  
-            />
-          </View>
-        </ScrollView>
-        <View style={buttonContainerStyle}>
-          <Button onPress={ () => this.submit() } 
-            label={"SUBMIT"}
-          /> 
         </View>
-      </View>
-    );
+      );
+    }
+  }
+
+  static propTypes = {
+    onValueChange: propTypes.func,
+  };
+  static defaultProps = {
+    onValueChange: () => 'null',
   }
 }

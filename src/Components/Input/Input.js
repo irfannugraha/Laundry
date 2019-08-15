@@ -1,47 +1,33 @@
 import React, { Component } from 'react';
-import {Animated, Text, TextInput, View} from 'react-native';
-import PropTypes from 'prop-types';
+import {Image, TextInput, View} from 'react-native';
 import Style from './InputStyle';
 
 export default class Input extends Component{
 
   constructor() {
       super()
-      this.state = {
-          Value: new Animated.Value(5),
-      }
-  }
-
-  muncul() {
-    Animated.timing(this.state.Value, {
-      toValue: 1,
-      duration: 500,
-    }).start();
-    Animated.timing(this.state.Value, {
-      toValue: 5,
-      duration: 500,
-    }).start();
   }
 
   render(){
-    const { onChangeText, value, label, placeholder, multiline, maxLength, moreStyle } = this.props;
-    const { styleContainerChild, styleText, styleContainer, styleInput } = Style;
-
+    const { editable, secureTextEntry, iconSource, onChangeText, value, placeholder, multiline, maxLength, moreStyle, } = this.props;
+    const { iconStyle, styleContainer, styleInput } = Style;
+    
     return (
       <View style={[styleContainer, moreStyle]}>
-        <Animated.View style={[styleContainerChild, {
-            opacity: this.state.Value,
-            bottom: this.state.Value,
-          }]}>
-          <Text style={[styleText]}>{label}</Text>
-        </Animated.View>
+        <Image
+          style={iconStyle}
+          tintColor='black'
+          source={iconSource}
+        />
         <TextInput 
           style={styleInput}
+          secureTextEntry={secureTextEntry}
           placeholder={placeholder}
-          multiline= {multiline}
           maxLength={maxLength}
+          multiline= {multiline}
           onChangeText={onChangeText}
           value={value}
+          editable={editable}
         />
       </View>
     )
@@ -49,13 +35,11 @@ export default class Input extends Component{
 }
 
 Input.defaultProps = {
+  onChangeText: null,
+  value: null,
   multiline: false,
   moreStyle: null,
   label: null,
-  value: null
+  maxLength: null,
+  iconSource: require('../../icon/default.png'),
 };
-
-Input.propTypes = {
-  maxLength: PropTypes.number.isRequired,
-  onChangeText: PropTypes.func.isRequired,
-}

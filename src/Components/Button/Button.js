@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import {Animated, Text, View} from 'react-native';
+import {TouchableOpacity, Animated, Text, View} from 'react-native';
 import Style from './ButtonStyle';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default class Button extends Component{
 

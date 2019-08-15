@@ -2,24 +2,17 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   styleContainer: {
-    flexDirection: 'column',
+    flexDirection: 'row',
     alignItems: 'center',
-
   },
-  styleContainerChild: {
-    width: '100%',
-    justifyContent: 'flex-end',
-  },
-  styleText: {
-    fontSize: 15,
-    color: 'black',
+  iconStyle: {
+    height: 17.5,
+    width: 17.5,
+    marginHorizontal: 10,
   },
   styleInput: {
+    marginStart: 10,
     fontSize: 20,
-    width: '100%',
-    borderBottomWidth: 1,
-    borderBottomColor: 'black',
-    marginTop: -10,
-    paddingBottom: 5,
+    flex: 1,
   },
 })

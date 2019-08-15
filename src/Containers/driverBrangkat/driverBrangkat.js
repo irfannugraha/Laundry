@@ -1,16 +1,11 @@
 import React, { Component } from 'react';
-import { Animated, Easing, Text, ScrollView, View} from 'react-native';
+import { Animated, Easing, Text, View} from 'react-native';
 import styles from './driverBrangkatStyle';
-import Input from '../../Components/Input/Input';
-import DropDown from '../../Components/Drop down/DropDown';
 import Button from '../../Components/Button/Button';
-import Paragraph from '../../Components/Paragraph/Paragraph';
 
 class tungguKonfirmasi extends Component{
 
   static navigationOptions = {  
-    title: 'Cuci Baju',
-
     header: null,
   }
 
@@ -98,7 +93,11 @@ class tungguKonfirmasi extends Component{
             }]} />
           </View>          
         </View>
-        <Button moreStyle={{height: 70}} label='Home' />
+        <Button 
+          onPress={() => this.props.navigation.navigate('landingPage')}
+          moreStyle={{height: 70}} 
+          label='Home' 
+        />
       </View>
     );
   }

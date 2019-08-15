@@ -73,7 +73,7 @@ export default class App extends Component {
     }
  
   render() {
-    const usre = this.state.user;
+    const user = this.state.user;
 
     return (
       <View style={styles.container}>

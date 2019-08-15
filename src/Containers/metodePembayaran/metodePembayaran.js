@@ -8,16 +8,7 @@ import Paragraph from '../../Components/Paragraph/Paragraph';
 class metodePembayaran extends Component{
 
   static navigationOptions = {  
-    title: 'Cuci Baju',
-    
-    headerStyle: {
-      backgroundColor: 'orange',
-    },
-    headerTitleStyle: {
-      color: 'white',
-      textAlign: 'center',
-      flex: 1,
-    },
+    title: 'Pilih metode pembayaran',
   }
 
   constructor() {
@@ -38,11 +29,17 @@ class metodePembayaran extends Component{
       <View style={{flex: 1}}>
         <DropDown 
           moreStyle={dropDownStyle}
-          placeHolder='Metode Pembayaran'
           data={this.state.pembayaran}
+          placeholder={'Metode Pembayaran'} 
+          selectedValue={this.state.jenis_layanan}
+          onValueChange={(item) => this.setState({jenis_layanan: item})}
         />
         <Paragraph moreStyle={{flex: 1, borderWidth: 0}} />
-        <Button moreStyle={{height: 70}} label='BAYAR' />
+        <Button 
+          moreStyle={{height: 70}} 
+          label='BAYAR' 
+          onPress={() => this.props.navigation.navigate('tungguKonfirmasi')}
+        />
       </View>
     );
   }
