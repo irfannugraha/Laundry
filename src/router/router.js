@@ -8,13 +8,17 @@ import tungguKonfirmasi from '../Containers/tungguKonfirmasi/tungguKonfirmasi';
 import driverBrangkat from '../Containers/driverBrangkat/driverBrangkat';
 import signUp from '../Containers/+Ohers/signUp/signUp';
 import login from '../Containers/+Ohers/login/login';
-import Teks from '../Components/Teks/Teks';
+import catatanPembelian from '../Containers/+Ohers/catatanPembelian/catatanPembelian';
+import editProfile from '../Containers/editProfile/editProfile';
+import fire from '../Containers/fire/fire';
 
 export default createAppContainer(createStackNavigator(
     {
         landingPage,
-        signUp,
         login,
+        signUp,
+        catatanPembelian,
+        editProfile,    
         metodePembayaran,
         cuciBaju,
         driverBrangkat,
@@ -24,8 +28,17 @@ export default createAppContainer(createStackNavigator(
     },
     {
         defaultNavigationOptions: {
+
+            headerTitleStyle: {
+                fontSize: 15,
+                color: 'white',
+            },
             headerStyle: {
-                backgroundColor: 'white',
+                // backgroundColor: "#DAF2FB",
+                backgroundColor: '#00B869',
+                elevation: 0,
+                shadowOption: 0,
+
             }
         }
     }

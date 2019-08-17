@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { YellowBox, ScrollView, View} from 'react-native';
+import { ScrollView, View} from 'react-native';
 import firebase from 'firebase';
 import styles from './cuciBajuStyles';
 import Loader from '../../Components/LoadingScreen/loading';
 import Input from '../../Components/Input/Input';
 import DropDown from '../../Components/Drop down/DropDown';
 import Button from '../../Components/Button/Button';
-import propTypes from 'prop-types';
+
 
 export default class cuciBaju extends Component{
 
@@ -15,13 +15,12 @@ export default class cuciBaju extends Component{
   }
 
   constructor() {
-    YellowBox.ignoreWarnings(['Setting a timer']);
     super();
     this.state = {
       user: firebase.database().ref('user/'+ firebase.auth().currentUser.uid),
       loading: false,
 
-      id: 0,
+      id: 1,
       nama: '',
       alamat: '',
       no_hp: '',
@@ -100,18 +99,16 @@ export default class cuciBaju extends Component{
           lainya: 0,
         }
       });
-      this.state.user.child('/bio').update({
-        status: {
-          idActive: this.state.id, 
-          ket: "driver"
-        }
-      })
+      this.state.user.child('/bio/status').set({
+        idActive: this.state.id, 
+        ket: "driver"
+      });
       this.props.navigation.navigate('driverBrangkat'); 
     }
   }
 
   render() {
-    const { buttonContainerStyle, inputStyle, containerChild, container } = styles;
+    const { buttonStyle, inputStyle, containerChild, container } = styles;
     if (this.state.loading == true) {
       return(
         <Loader/>
@@ -185,20 +182,13 @@ export default class cuciBaju extends Component{
               />
             </View>
           </ScrollView>
-          <View style={buttonContainerStyle}>
-            <Button onPress={ () => this.submit() } 
-              label={"SUBMIT"}
-            />
-          </View>
+          <Button moreStyle={buttonStyle}
+            onPress={ () => this.submit() } 
+            label={"SUBMIT"}
+          />
         </View>
       );
     }
   }
 
-  static propTypes = {
-    onValueChange: propTypes.func,
-  };
-  static defaultProps = {
-    onValueChange: () => 'null',
-  }
 }

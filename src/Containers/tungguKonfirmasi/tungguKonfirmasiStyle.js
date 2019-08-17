@@ -8,4 +8,9 @@ export default StyleSheet.create({
   textStyle: {
     textAlign: 'center',
   },
+  buttonStyle:{
+    height: 50,
+    borderRadius: 100,
+    margin: 10,
+  },
 });

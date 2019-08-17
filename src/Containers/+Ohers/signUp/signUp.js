@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { YellowBox, Text, View} from 'react-native';
+import { TouchableOpacity, YellowBox, Text, View} from 'react-native';
 import firebase from 'firebase';
 import styles from './signUpStyle';
 import Input from '../../../Components/Input/Input';
 import Button from '../../../Components/Button/Button';
-import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 export default class login extends Component{
 
@@ -21,6 +20,7 @@ export default class login extends Component{
       noHp: '',
       alamat: '',
       password: '',
+      
       loading: false,
     }
   }
@@ -35,6 +35,10 @@ export default class login extends Component{
       noHp: noHp,
       alamat: alamat,
       point: 0,
+      status: {
+        idActive: 0,
+        ket: '',
+      }
     })
     this.props.navigation.navigate('landingPage');
   }

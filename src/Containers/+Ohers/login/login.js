@@ -4,7 +4,6 @@ import firebase from 'firebase';
 import styles from './loginStyle';
 import Input from '../../../Components/Input/Input';
 import Button from '../../../Components/Button/Button';
-import propTypes from 'prop-types';
 
 export default class login extends Component{
 
@@ -37,7 +36,20 @@ export default class login extends Component{
         this.setState({loading: false}),
       )
   }
-  
+
+  ubahPass() {
+    var email = this.state.email;
+    if (email == '') {
+      alert('Mohon masukan email');
+    }else{
+      firebase.auth().sendPasswordResetEmail(email).then(function() {
+        alert('Kami telah mengirim tautan untuk mengatur ulang kata sandi ke ' + email)
+      }).catch(function() {
+          alert('Mohon masukan email dengan benar')
+      })
+    }
+  }
+
   render() {
     const { buttonStyle, inputStyle, containerChild, textContainerStyle, textStyle, forgotpassStyle } = styles;
     return (
@@ -71,7 +83,7 @@ export default class login extends Component{
               <TouchableOpacity 
                 onPress={() => this.props.navigation.navigate('signUp')}
               >
-                <Text style={[textStyle, {fontWeight: 'bold', color: 'orange'}]}>
+                <Text style={[textStyle, {borderBottomWidth: 1}]}>
                   Buat akun sekarang
                 </Text>
               </TouchableOpacity>
@@ -79,7 +91,7 @@ export default class login extends Component{
           </View>
           <View style={forgotpassStyle}>
             <TouchableOpacity
-              onPress={() => alert('masih dalam pembangunan')}
+              onPress={() => this.ubahPass()}
             >
               <Text style={{alignSelf: 'center',}}>
                 Lupa password?

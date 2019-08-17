@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {FlatList, Animated, Text, ScrollView, View} from 'react-native';
+import {FlatList, Text, ScrollView, View} from 'react-native';
 import Style from './TabelStyles';
 
 const { styleContainer, textFlatStytle, flatHeaderStyle, flatHeaderChildStyle, flatContainerChildStyle,  flatContainerStyle } = Style;
@@ -91,7 +91,6 @@ export default class Paragraph extends Component{
             renderItem={this.renderItem}
             ListHeaderComponent={this.renderHeader}
             stickyHeaderIndices={[0]}
-            style={{}}
           />
         </View>
 

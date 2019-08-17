@@ -23,7 +23,7 @@ class metodePembayaran extends Component{
   }
 
   render() {
-    const { dropDownStyle } = styles;
+    const { buttonStyle, dropDownStyle } = styles;
 
     return (
       <View style={{flex: 1}}>
@@ -36,7 +36,7 @@ class metodePembayaran extends Component{
         />
         <Paragraph moreStyle={{flex: 1, borderWidth: 0}} />
         <Button 
-          moreStyle={{height: 70}} 
+          moreStyle={buttonStyle} 
           label='BAYAR' 
           onPress={() => this.props.navigation.navigate('tungguKonfirmasi')}
         />

@@ -7,9 +7,8 @@ export default StyleSheet.create({
   },
   containerChild: {
     paddingBottom: 20,
-    
     borderBottomWidth: 5,
-    borderBottomColor: 'gainsboro',
+    borderBottomColor: '#F2F3F5',
   },
 
   inputStyle: {
@@ -18,8 +17,9 @@ export default StyleSheet.create({
     marginHorizontal: 20,
   },
 
-  buttonContainerStyle: {
+  buttonStyle: {
     height: 50,
-    justifyContent: "center",
+    borderRadius: 100,
+    margin: 10,
   },
 });

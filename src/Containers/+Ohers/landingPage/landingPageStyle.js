@@ -7,15 +7,22 @@ export default StyleSheet.create({
   },
   bioContainerChild: {
     height: 80,
-    padding: 10,
-    alignItems: 'center',
     flexDirection: 'row',
   },
+  containerButtonStyle:{
+    paddingHorizontal: 10,
+    justifyContent: 'center',
+  },
+  headerButtonStyle:{
+    width: 25, 
+    height: 25,
+  },
+
   containerStyle: {
     flex: 1,
     paddingHorizontal: 10,
     paddingBottom: 20,
-    backgroundColor: 'gainsboro',  
+    backgroundColor: '#F2F3F5',  
   },
 
   statusContainerStyle: {

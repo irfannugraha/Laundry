@@ -26,7 +26,7 @@ class tungguKonfirmasi extends Component{
   }
 
   render() {
-    const { textStyle, containerChild } = styles;
+    const { buttonStyle, textStyle, containerChild } = styles;
 
     return (
       <View style={{flex: 1}}>
@@ -39,7 +39,7 @@ class tungguKonfirmasi extends Component{
           </Text>
         </View>
         <Button 
-          moreStyle={{height: 50}} 
+          moreStyle={buttonStyle} 
           label='Home' 
           onPress={() => this.props.navigation.navigate('landingPage')}
         />

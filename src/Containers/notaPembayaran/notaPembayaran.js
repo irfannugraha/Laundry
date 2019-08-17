@@ -20,6 +20,7 @@ class notaPembayaran extends Component{
       pesan: {},
       promo: null,
       loading: true,
+      pageBefore: '',
       user: firebase.database().ref('user/' + firebase.auth().currentUser.uid),
     }
   }
@@ -27,9 +28,14 @@ class notaPembayaran extends Component{
   componentDidMount() {
     const {user} = this.state;
     let val;
-    user.child('/bio/status/idActive').on('value', snapshot => {
-      val = snapshot.val();
-    })
+    const pageBefore = this.props.navigation.getParam('passing', 'null');
+    if (pageBefore == "catatan") {
+      val = this.props.navigation.getParam('id', 0);
+    }else if (pageBefore == "pemesanan"){
+      user.child('/bio/status/idActive').on('value', snapshot => {
+        val = snapshot.val();
+      })
+    }
 
     user.child('/pesan').orderByChild('id').equalTo( val ).once('child_added', snapshot => {
       const data = snapshot.val();

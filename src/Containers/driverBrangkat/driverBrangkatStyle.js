@@ -26,4 +26,11 @@ export default StyleSheet.create({
     backgroundColor: 'black',
     borderRadius: 1000,
   },
+
+  buttonStyle: {
+    height: 50,
+    borderRadius: 100,
+    margin: 10,
+  },
+  
 });

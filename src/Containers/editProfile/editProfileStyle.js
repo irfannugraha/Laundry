@@ -6,18 +6,23 @@ export default StyleSheet.create({
     flex: 1,
   },
   containerChild: {
-    paddingBottom: 35,
-    backgroundColor: 'white',
-    
-    borderBottomWidth: 5,
-    borderBottomColor: 'gainsboro',
+    paddingBottom: 20,
   },
+
+  pictContainer: {
+    marginVertical: 20,
+    alignItems: 'center',
+  },
+
   inputStyle: {
-    marginTop: 20,
+    borderBottomWidth: 1,
+    marginTop: 10,
     marginHorizontal: 20,
   },
+
   buttonContainerStyle: {
-    height: 70,
-    justifyContent: "center",
+    height: 50,
+    borderRadius: 100,
+    margin: 10,
   },
 });
