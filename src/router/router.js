@@ -1,25 +1,26 @@
 import { createStackNavigator, createAppContainer } from 'react-navigation';
-import landingPage from '../Containers/+Ohers/landingPage/landingPage';
+import landingPage from '../Containers/landingPage/landingPage';
 import cuciBaju from '../Containers/cuciBaju/cuciBaju';
 import pembayaran from '../Containers/pembayaran/pembayaran';
 import metodePembayaran from '../Containers/metodePembayaran/metodePembayaran';
 import notaPembayaran from '../Containers/notaPembayaran/notaPembayaran';
 import tungguKonfirmasi from '../Containers/tungguKonfirmasi/tungguKonfirmasi';
 import driverBrangkat from '../Containers/driverBrangkat/driverBrangkat';
-import signUp from '../Containers/+Ohers/signUp/signUp';
-import login from '../Containers/+Ohers/login/login';
-import catatanPembelian from '../Containers/+Ohers/catatanPembelian/catatanPembelian';
+import signUp from '../Containers/signUp/signUp';
+import login from '../Containers/login/login';
+import catatanPembelian from '../Containers/catatanPembelian/catatanPembelian';
 import editProfile from '../Containers/editProfile/editProfile';
-import fire from '../Containers/fire/fire';
+// import fire from '../Containers/fire/fire';
 
 export default createAppContainer(createStackNavigator(
     {
+        // fire,
         landingPage,
         login,
         signUp,
         catatanPembelian,
-        editProfile,    
         metodePembayaran,
+        editProfile,
         cuciBaju,
         driverBrangkat,
         pembayaran,
@@ -31,14 +32,15 @@ export default createAppContainer(createStackNavigator(
 
             headerTitleStyle: {
                 fontSize: 15,
-                color: 'white',
+                color: '#2EC5CB',
             },
+            headerTintColor: '#2EC5CB',
             headerStyle: {
                 // backgroundColor: "#DAF2FB",
-                backgroundColor: '#00B869',
-                elevation: 0,
-                shadowOption: 0,
-
+                // #EBF5FB
+                
+                backgroundColor: 'white',
+                elevation: 5,
             }
         }
     }

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, ScrollView, Animated, Image, YellowBox, View, Text, Easing } from 'react-native';
+import { TouchableOpacity, ScrollView, Animated, Image, YellowBox, Alert, View, Text, Easing } from 'react-native';
 import firebase from 'firebase';
-import Button from '../../../Components/Button/Button';
-import Spinner from '../../../Components/LoadingScreen/loading';
+import Button from '../../Components/Button/Button';
+import Spinner from '../../Components/LoadingScreen/loading';
 import LoginForm from '../login/login';
 import styles from './landingPageStyle';
 
@@ -21,10 +21,6 @@ class LandingPage extends Component {
       val: true,
       widthAnim: new Animated.Value(235 - 45),
       borderAnim: new Animated.Value(0),
-      animateValue: [new Animated.Value(0),
-        new Animated.Value(0),
-        new Animated.Value(0),
-        new Animated.Value(0)],
 
       user: {},
       harga: 0,
@@ -77,7 +73,14 @@ class LandingPage extends Component {
             },
             loggedIn: true
           })
+          firebase.database().ref('user/'+ firebase.auth().currentUser.uid + '/pesan').orderByChild('id').equalTo(this.state.user.status.idActive).on('child_added', snapshot => {
+            this.setState({
+              harga: snapshot.val().harga,
+              berat: snapshot.val().berat,
+            })
+          });
         });
+
       } else {
         this.setState({ loggedIn: false });
       }
@@ -93,7 +96,7 @@ class LandingPage extends Component {
           easing: Easing.out(Easing.quad)
         }),
         Animated.timing(this.state.borderAnim, {
-          toValue: 1,
+          toValue: 10,
           duration: 500,
           easing: Easing.out(Easing.quad)
         })
@@ -116,85 +119,45 @@ class LandingPage extends Component {
     }
   }
 
-  animDriverOTW() {
-    const easingIn= Easing.elastic(1.5);
-    const easingOut= Easing.back(2);
-
-    const createAnimate = function(Value, easing, toValue, delay = 0){
-      return Animated.timing( Value, {
-        toValue,
-        duration: 500,
-        delay,
-        easing,
-      })
-    }
-
-    Animated.loop(
-      Animated.sequence([
-        Animated.parallel([
-          createAnimate(this.state.animateValue[0], easingIn, 15),
-          createAnimate(this.state.animateValue[1], easingIn, 15, 150),
-          createAnimate(this.state.animateValue[2], easingIn, 15, 300),
-          createAnimate(this.state.animateValue[3], easingIn, 15, 450),
-        ]),
-        Animated.delay(500),
-        Animated.parallel([
-          createAnimate(this.state.animateValue[0], easingOut, 0),
-          createAnimate(this.state.animateValue[1], easingOut, 0, 150),
-          createAnimate(this.state.animateValue[2], easingOut, 0, 300),
-          createAnimate(this.state.animateValue[3], easingOut, 0, 450),
-        ])
-      ]),
-    ).start();
-  }
-
-  bayar(){
-    firebase.database().ref('user/'+ firebase.auth().currentUser.uid + '/pesan').orderByChild('id').equalTo(this.state.user.status.idActive).once('child_added', snapshot => {
-      this.setState({
-        harga: snapshot.val().harga,
-        berat: snapshot.val().berat,
-      })
-    });
-  }
-
   renderHeader() {
     const {bioContainerChild, headerButtonStyle, containerButtonStyle} = styles;
     const panjang = 235;
     return(
       <View style={bioContainerChild}>
-        <View style={{alignItems: 'center', 
-            flexDirection: 'row', 
-            paddingHorizontal: 10,
+          <Animated.View style={{alignItems: 'center',
             width: 125,
-          }}
-        >
-          <TouchableOpacity onPress={() => this.props.navigation.navigate('editProfile')}>
-            <Image style={{borderRadius: 1000,
-              width: 50, height: 50, marginEnd: 10,
-              }}
-              source={{uri: 'https://firebasestorage.googleapis.com/v0/b/laundry-69.appspot.com/o/images%2Fblank-profile-picture-973460_960_720.png?alt=media&token=06bffb17-ecb4-43e6-b2e9-672f984e801d'}}
-            />
-          </TouchableOpacity>
-          <View>
-            <Text style={{fontSize: 20}}>
-              {this.state.user.nama}
-            </Text>
-            <Text style={{fontSize: 15, color: 'dimgray'}}>
-              {'Poin '} {this.state.user.poin}
-            </Text>
-          </View>
-        </View>
+            paddingHorizontal: 10,
+            flex: 1, 
+            flexDirection: 'row',}}
+          >
+              <TouchableOpacity onPress={() => this.props.navigation.navigate('editProfile')}>
+                <Image style={{borderRadius: 1000,
+                  width: 50, height: 50, marginEnd: 10,
+                  }}
+                  source={{uri: 'https://firebasestorage.googleapis.com/v0/b/laundry-69.appspot.com/o/images%2Fblank-profile-picture-973460_960_720.png?alt=media&token=06bffb17-ecb4-43e6-b2e9-672f984e801d'}}
+                />
+              </TouchableOpacity>
+              <View>
+                <Text style={{fontSize: 20}}>
+                  {this.state.user.nama}
+                </Text>
+                <Text style={{fontSize: 15, color: 'dimgray'}}>
+                  {'Poin '} {this.state.user.poin}
+                </Text>
+              </View>
+          </Animated.View>
         <Animated.View style={{alignItems: 'center',
+          backgroundColor: 'white',
           paddingHorizontal: 10,
           width: panjang,
           height: '100%',
           flexDirection: 'row',
-          borderStartWidth: this.state.borderAnim,
+          elevation: this.state.borderAnim,
           transform: [{translateX: this.state.widthAnim}]}}
         >
           <TouchableOpacity onPress={() => this.anim(panjang)}>
             <Image style={{width: 25, height: 25}}
-              source={require('../../../icon/menu.png')}
+              source={require('../../icon/menu.png')}
             />
           </TouchableOpacity>
           <View style={{flex: 1, 
@@ -205,28 +168,31 @@ class LandingPage extends Component {
               <View style={containerButtonStyle}>              
                 <TouchableOpacity onPress={() => alert('Mohon maaf, dalam masa pembangunn')}>
                   <Image style={headerButtonStyle}
-                    source={require('../../../icon/coupon.png')}
+                    source={require('../../icon/coupon.png')}
                   />
                 </TouchableOpacity>
               </View>
               <View style={containerButtonStyle}>
                 <TouchableOpacity onPress={() => this.props.navigation.navigate('catatanPembelian')}>
                   <Image style={headerButtonStyle}
-                    source={require('../../../icon/note.png')}
+                    source={require('../../icon/note.png')}
                   />
                 </TouchableOpacity>
               </View>
               <View style={containerButtonStyle}>
-                <TouchableOpacity onPress={() => alert('sukses')}>
+                <TouchableOpacity onPress={() => alert('Mohon maaf, dalam masa pembangunan')}>
                   <Image style={headerButtonStyle}
-                    source={require('../../../icon/question.png')}
+                    source={require('../../icon/question.png')}
                   />
                 </TouchableOpacity>
               </View>
               <View style={[containerButtonStyle, {paddingEnd: 0}]}>
-                <TouchableOpacity onPress={() => firebase.auth().signOut()}>
+                <TouchableOpacity onPress={() => Alert.alert(
+                  'Logout', 'Apakah anda yakin untuk logout', 
+                  [{text: 'Ya', onPress: () => firebase.auth().signOut()}, {text: 'Tidak'}])}
+                >
                   <Image style={headerButtonStyle}
-                    source={require('../../../icon/logout.png')}
+                    source={require('../../icon/logout.png')}
                   />
                 </TouchableOpacity>
               </View>
@@ -237,10 +203,8 @@ class LandingPage extends Component {
   }
 
   renderStatus(ket) {
-    this.bayar();
     switch(ket) {
-      case 'driver':
-        this.animDriverOTW();
+      case 'driver':        
         return(
           <View style={{alignItems: 'center', flex: 1, justifyContent: 'center'}}>
             <Text style={{fontSize: 20}}>
@@ -248,6 +212,14 @@ class LandingPage extends Component {
             </Text>
           </View>
         )
+      case 'driverSampai':
+          return(
+            <View style={{alignItems: 'center', flex: 1, justifyContent: 'center'}}>
+              <Text style={{fontSize: 20}}>
+                Driver anda telah sampai
+              </Text>
+            </View>
+          )
       case 'bayar':
         return(
           <View style={{flex: 1}}>
@@ -274,10 +246,21 @@ class LandingPage extends Component {
                 </Text>
             </View>
             <Button 
-              moreStyle={{height: 50, borderRadius: 7}}
+              moreStyle={{height: 50, borderRadius: 100,}}
               onPress={() => this.props.navigation.navigate('pembayaran')}
               label={'BAYAR'}
             />
+          </View>
+        )
+      case 'konfirmasi':
+        return(
+          <View style={{alignItems: 'center', flex: 1, justifyContent: 'center'}}>
+            <Text style={{fontSize: 50}}>
+              Terimakasih
+            </Text>
+            <Text style={{fontSize: 20}}>
+              Silahkan tunggu pakaian anda
+            </Text>
           </View>
         )
       case 'selesai':
@@ -292,8 +275,8 @@ class LandingPage extends Component {
               </Text>
             </View>
             <Button 
-              moreStyle={{height: 50, borderRadius: 7}}
-              onPress={() => this.props.navigation.navigate('notaPembayaran', {passing: 'catatan', id: this.state.user.status.idActive})}
+              moreStyle={{height: 50, borderRadius: 100,}}
+              onPress={() => this.props.navigation.navigate('notaPembayaran', {id: this.state.user.status.idActive})}
               label={'Detail'}
             />
           </View>
@@ -309,7 +292,7 @@ class LandingPage extends Component {
               Tidak ada pesanan yang berlangsung
             </Text>
             <Button 
-              moreStyle={{height: 50, borderRadius: 7}}
+              moreStyle={{height: 50, borderRadius: 100,}}
               onPress={() => this.props.navigation.navigate('cuciBaju')}
               label={'Pesan Sekarang'}
             />                    
@@ -355,7 +338,7 @@ class LandingPage extends Component {
               alignItems: 'center',
               borderWidth: 0,}]}>
                 <Image
-                  source={require('../../../icon/right-arrow.png')}
+                  source={require('../../icon/right-arrow.png')}
                   style={{width: 40, height: 40, marginBottom: 10}}
                 />
                 <Text style={{fontSize: 20}}>
@@ -377,7 +360,7 @@ class LandingPage extends Component {
         <View style={{flex: 1}}>
             {this.renderHeader()}
             <View style={containerStyle}>
-                <View style={{flex: 2}}>
+                <View style={{flex: 2,}}>
                     <Text style={{fontSize: 20,
                       fontWeight: '600',
                       marginTop: 20}}>
@@ -402,9 +385,9 @@ class LandingPage extends Component {
                             justifyContent: 'center',
                             flex: 1}}>
                             <Image
-                              source={require('../../../icon/right-arrow.png')}
+                              source={require('../../icon/right-arrow.png')}
                               tintColor='black'
-                              style={{ height: 23, width: 23}}
+                              style={{height: 20, width: 20, borderWidth: 10,}}
                             />                              
                           </View>
                       </TouchableOpacity>

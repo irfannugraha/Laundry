@@ -9,16 +9,20 @@ export default class Input extends Component{
   }
 
   render(){
-    const { editable, secureTextEntry, iconSource, onChangeText, value, placeholder, multiline, maxLength, moreStyle, } = this.props;
+    const { keyboardType, editable, secureTextEntry, iconSource, onChangeText, value, placeholder, multiline, maxLength, moreStyle, } = this.props;
     const { iconStyle, styleContainer, styleInput } = Style;
     
     return (
       <View style={[styleContainer, moreStyle]}>
-        <Image
-          style={iconStyle}
-          tintColor='black'
-          source={iconSource}
-        />
+        {iconSource ? 
+          <Image
+            style={iconStyle}
+            tintColor='black'
+            source={iconSource}
+          />
+          :
+          null
+        }
         <TextInput 
           style={styleInput}
           secureTextEntry={secureTextEntry}
@@ -28,6 +32,7 @@ export default class Input extends Component{
           onChangeText={onChangeText}
           value={value}
           editable={editable}
+          keyboardType={keyboardType}
         />
       </View>
     )
@@ -41,5 +46,5 @@ Input.defaultProps = {
   moreStyle: null,
   label: null,
   maxLength: null,
-  iconSource: require('../../icon/default.png'),
+  iconSource: null,
 };

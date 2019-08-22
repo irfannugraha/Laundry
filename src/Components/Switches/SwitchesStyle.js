@@ -2,17 +2,18 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   container: {
-    backgroundColor: 'orange',
+    backgroundColor: '#2EC5CB',
     flexDirection: 'row',
     borderRadius: 2,
+    borderRadius: 100,
   },
   switchStyle: {
     position: 'absolute',
     justifyContent: 'center',
     alignSelf: 'center',
-    borderRadius: 2,
+    borderRadius: 100,
     borderWidth: 2,
-    borderColor: 'orange',
+    borderColor: '#2EC5CB',
     backgroundColor: 'white',
   },
   firstContainer: {

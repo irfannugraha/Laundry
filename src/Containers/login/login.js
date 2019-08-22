@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, Text, View} from 'react-native';
+import { Image, TouchableOpacity, Text, View} from 'react-native';
 import firebase from 'firebase';
 import styles from './loginStyle';
-import Input from '../../../Components/Input/Input';
-import Button from '../../../Components/Button/Button';
+import Input from '../../Components/Input/Input';
+import Button from '../../Components/Button/Button';
 
 export default class login extends Component{
 
@@ -19,7 +19,7 @@ export default class login extends Component{
       password: '',
     }
   }
-  
+
   onLoginSuccess() {
     this.setState({ email: '', password: '', loading: false });
   }
@@ -30,7 +30,7 @@ export default class login extends Component{
     this.setState({ error: '', loading: true });
 
     firebase.auth().signInWithEmailAndPassword(email, password)
-      .then(this.onLoginSuccess.bind(this))
+      .then(() => this.onLoginSuccess())
       .catch(
         error => alert(error.message),
         this.setState({loading: false}),
@@ -42,35 +42,41 @@ export default class login extends Component{
     if (email == '') {
       alert('Mohon masukan email');
     }else{
-      firebase.auth().sendPasswordResetEmail(email).then(function() {
+      firebase.auth().sendPasswordResetEmail(email).then(() => {
         alert('Kami telah mengirim tautan untuk mengatur ulang kata sandi ke ' + email)
-      }).catch(function() {
-          alert('Mohon masukan email dengan benar')
+      }).catch(() => {
+        alert('Mohon masukan email dengan benar')
       })
     }
   }
 
   render() {
-    const { buttonStyle, inputStyle, containerChild, textContainerStyle, textStyle, forgotpassStyle } = styles;
+    const { logoStyle, buttonStyle, inputStyle, containerChild, textContainerStyle, textStyle, forgotpassStyle } = styles;
     return (
       <View style={{flex: 1}}>
-        <View
-          style={{flex: 1}} 
-        />
+        <View style={{flex: 1, marginTop: 10, justifyContent: 'center', alignItems: 'center'}}>
+          <View style={logoStyle}>
+            <Image
+              style={{height: '100%', width: '100%', tintColor: 'white'}}
+              source={require('../../icon/tshirt.png')}
+            />
+          </View>
+        </View>
         <View style={containerChild}>
           <View style={{flex: 9}}>
-            <Input moreStyle={inputStyle} 
+            <Input moreStyle={inputStyle}
               placeholder={'Email'}
               value={this.state.email}
               onChangeText={(email) => this.setState({email})}
-              iconSource={require('../../../icon/user.png')}
+              iconSource={require('../../icon/user.png')}
+              keyboardType={'email-address'}
             />
             <Input moreStyle={inputStyle} 
               placeholder={'Password'}
               secureTextEntry={true}
               value={this.state.password}
               onChangeText={(password) => this.setState({password})}
-              iconSource={require('../../../icon/key.png')}
+              iconSource={require('../../icon/key.png')}
             />
             <Button moreStyle={buttonStyle}
                 onPress={() => this.onLogin()}
@@ -93,7 +99,7 @@ export default class login extends Component{
             <TouchableOpacity
               onPress={() => this.ubahPass()}
             >
-              <Text style={{alignSelf: 'center',}}>
+              <Text style={{alignSelf: 'center', borderBottomWidth: 1}}>
                 Lupa password?
               </Text>
             </TouchableOpacity>

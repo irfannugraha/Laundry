@@ -20,7 +20,6 @@ class notaPembayaran extends Component{
       pesan: {},
       promo: null,
       loading: true,
-      pageBefore: '',
       user: firebase.database().ref('user/' + firebase.auth().currentUser.uid),
     }
   }
@@ -28,14 +27,7 @@ class notaPembayaran extends Component{
   componentDidMount() {
     const {user} = this.state;
     let val;
-    const pageBefore = this.props.navigation.getParam('passing', 'null');
-    if (pageBefore == "catatan") {
-      val = this.props.navigation.getParam('id', 0);
-    }else if (pageBefore == "pemesanan"){
-      user.child('/bio/status/idActive').on('value', snapshot => {
-        val = snapshot.val();
-      })
-    }
+    val = this.props.navigation.getParam('id', 0);
 
     user.child('/pesan').orderByChild('id').equalTo( val ).once('child_added', snapshot => {
       const data = snapshot.val();
@@ -60,7 +52,7 @@ class notaPembayaran extends Component{
   }
 
   render() {
-    const { inputStyle, containerStyle, pemisahStyle } = styles;
+    const { inputStyle, containerStyle, pemisahStyle, buttonStyle } = styles;
     
     if (this.state.loading) {
       return(
@@ -72,23 +64,19 @@ class notaPembayaran extends Component{
           <View
             style={{height: 70,
               borderBottomWidth: 5,
-              borderBottomColor: 'lightgray',
+              borderBottomColor: '#EBF5FB',
               padding: 20,}}
           >
             <View style={{flex: 1, alignItems: 'flex-end'}}>
                 <Text style={{fontSize: 17}}>
                   {this.state.pesan.tanggal_masuk}
-                  {/* <Text>
-                    {" - "}
-                  </Text>
-                  {this.state.pesan.tanggal_keluar} */}
                 </Text>
                 <Text>
                   Id pesanan : {this.state.pesan.id}
                 </Text>
             </View>
           </View>
-          <ScrollView style={{flex: 1, paddingTop: 15}}>
+          <ScrollView style={{flex: 1, paddingTop: 5}}>
               <View style={containerStyle}>
                   <View style={pemisahStyle}>
                     <Teks moreStyle={inputStyle}
@@ -100,7 +88,7 @@ class notaPembayaran extends Component{
                       value={this.state.pesan.alamat}
                     />
                     <Teks moreStyle={inputStyle}
-                      label={'Telephone'}
+                      label={'Telepon'}
                       value={this.state.pesan.no_hp}
                     />
                   </View>
@@ -167,7 +155,7 @@ class notaPembayaran extends Component{
                 moreStyle={{height: 250, }}
               />
           </ScrollView>
-          <Button moreStyle={{height: 50}}
+          <Button moreStyle={buttonStyle}
             onPress={() => this.backHome()}
             label='Home' />
         </View>

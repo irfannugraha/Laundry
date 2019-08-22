@@ -12,7 +12,7 @@ export default StyleSheet.create({
     padding: 5,
     borderWidth: 1,
     borderColor: 'white',
-    backgroundColor: 'orange',
+    backgroundColor: '#87E5F5',
   },
 
   textFlatStytle:{

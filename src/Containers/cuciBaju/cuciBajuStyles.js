@@ -8,7 +8,7 @@ export default StyleSheet.create({
   containerChild: {
     paddingBottom: 20,
     borderBottomWidth: 5,
-    borderBottomColor: '#F2F3F5',
+    borderBottomColor: '#EBF5FB',
   },
 
   inputStyle: {

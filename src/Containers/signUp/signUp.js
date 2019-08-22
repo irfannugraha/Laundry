@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, YellowBox, Text, View} from 'react-native';
+import { ScrollView, TouchableOpacity, YellowBox, Text, View} from 'react-native';
 import firebase from 'firebase';
 import styles from './signUpStyle';
-import Input from '../../../Components/Input/Input';
-import Button from '../../../Components/Button/Button';
+import Input from '../../Components/Input/Input';
+import Button from '../../Components/Button/Button';
 
 export default class login extends Component{
 
@@ -67,39 +67,41 @@ export default class login extends Component{
     }else{
       return (
         <View style={container}>
-          <View style={containerChild}>
+          <ScrollView contentContainerStyle={{flexGrow: 3, justifyContent: 'center'}}>
             <Input moreStyle={inputStyle} 
               placeholder={'Nama'}
-              iconSource={require('../../../icon/user.png')}
+              iconSource={require('../../icon/user.png')}
               value={this.state.nama}
               onChangeText={(nama) => this.setState({nama})}
             />
             <Input moreStyle={inputStyle} 
               placeholder={'Email'}
-              iconSource={require('../../../icon/email.png')}
+              iconSource={require('../../icon/email.png')}
               value={this.state.email}
               onChangeText={(email) => this.setState({email})}
+              keyboardType={'email-address'}
             />
             <Input moreStyle={inputStyle} 
               placeholder={'No Telphone'}
-              iconSource={require('../../../icon/telephone.png')}
+              iconSource={require('../../icon/telephone.png')}
               value={this.state.noHp}
               onChangeText={(noHp) => this.setState({noHp})}
+              keyboardType={'phone-pad'}
             />
             <Input moreStyle={inputStyle} 
               placeholder={'Alamat'}
-              iconSource={require('../../../icon/pin.png')}
+              iconSource={require('../../icon/pin.png')}
               value={this.state.alamat}
               onChangeText={(alamat) => this.setState({alamat})}
             />          
             <Input moreStyle={inputStyle} 
               placeholder={'Password'}
-              iconSource={require('../../../icon/key.png')}
+              iconSource={require('../../icon/key.png')}
               value={this.state.password}
               secureTextEntry={true}
               onChangeText={(password) => this.setState({password})}
             />
-          </View>
+          </ScrollView>
           <View style={{flex: 1}}>
             <Button moreStyle={buttonStyle}
                 onPress={() => this.onSignUp()}
@@ -109,7 +111,7 @@ export default class login extends Component{
               <TouchableOpacity 
                 onPress={() => this.props.navigation.navigate('login')}
               >
-                <Text style={[textStyle, {}]}>
+                <Text style={[textStyle, {borderBottomWidth: 1}]}>
                   Atau login sekarang
                 </Text>
               </TouchableOpacity>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {FlatList, Text, ScrollView, View} from 'react-native';
+import {FlatList, Text, View} from 'react-native';
 import Style from './TabelStyles';
 
 const { styleContainer, textFlatStytle, flatHeaderStyle, flatHeaderChildStyle, flatContainerChildStyle,  flatContainerStyle } = Style;

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {Image, Picker, View} from 'react-native';
-import PropTypes from 'prop-types';
 import Style from './DropDownStyle';
 
 export default class DropDown extends Component{
@@ -11,11 +10,15 @@ export default class DropDown extends Component{
 
     return (
       <View style={[containerStyle, moreStyle]}>
-        <Image
-          style={iconStyle}
-          tintColor='black'
-          source={iconSource}
-        />
+        {iconSource ? 
+          <Image
+            style={iconStyle}
+            tintColor='black'
+            source={iconSource}
+          />
+          :
+          null
+        }
         <Picker
           style={pickerStyle}
           selectedValue={selectedValue}
@@ -39,5 +42,5 @@ export default class DropDown extends Component{
 DropDown.defaultProps = {
   data: ['pertama', 'kedua'],
   label: '',
-  iconSource: require('../../icon/default.png'),
+  iconSource: null,
 };

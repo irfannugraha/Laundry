@@ -77,9 +77,9 @@ export default class Switches extends Component {
             <View style={firstContainer}>
               <Text style={[fontStyle, {
                 color: this.state.val == firstLabel ?
-                  'orange'
+                  '#2EC5CB'
                 :
-                  '#ffc966'
+                  'white'
               }]}>
               {firstLabel}
               </Text>
@@ -87,9 +87,9 @@ export default class Switches extends Component {
             <View style={firstContainer}>
               <Text style={[fontStyle, {
                 color: this.state.val == firstLabel ?
-                  '#ffc966'
+                  'white'
                 :
-                  'orange'
+                  '#2EC5CB'
               }]}>
               {secondLabel}
               </Text>

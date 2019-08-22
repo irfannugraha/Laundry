@@ -1,24 +1,26 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-  container: {
-    height: '100%',
-    paddingHorizontal: 20,
-  },
   containerChild: {
-    flex: 3, 
-    justifyContent: 'center',
+    flex: 1.25,
+    marginHorizontal: 20, 
+  },
+  logoStyle: {
+    height: 200,
+    width: 200,
+    padding: 30,
+    paddingTop: 15,
+    borderRadius: 500,
+    backgroundColor: '#2EC5CB',
   },
   inputStyle: {
     borderBottomWidth: 1, 
-    marginTop: 20,
-    paddingStart: 20,
-    borderRadius: 1000,
+    marginTop: 15,
   },
+
   buttonStyle: {
     height: 50,
-    marginHorizontal: 20,
-    marginTop: 15,
+    marginTop: 25,
     borderRadius: 1000,
   },
   textContainerStyle: {
@@ -26,14 +28,8 @@ export default StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'row',
   },
-  textStyle: {
-    
-  },
 
   forgotpassStyle: {
-    
-    flex: 1,
-    justifyContent: 'flex-end',
     marginBottom: 20,
   },
 });

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 
-export default class Input extends Component{
+export default class loading extends Component{
 
   render(){
       return (

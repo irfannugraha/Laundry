@@ -14,6 +14,6 @@ export default StyleSheet.create({
   },
   pickerStyle: {
     flex: 1,
-    marginStart: 10,
+    marginStart: 5,
   },
 })

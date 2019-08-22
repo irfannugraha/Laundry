@@ -12,7 +12,7 @@ export default StyleSheet.create({
   },
   styleInput: {
     marginStart: 10,
-    fontSize: 20,
+    fontSize: 18,
     flex: 1,
   },
 })

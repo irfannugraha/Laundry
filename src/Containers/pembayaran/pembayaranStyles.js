@@ -19,6 +19,11 @@ export default StyleSheet.create({
     flex: 1,
     margin: 10,
     marginStart: 50,
-    borderRadius: 5,
+    borderRadius: 100,
+  },
+  pemisahStyle: {
+    paddingBottom: 10,
+    borderBottomWidth: 5,
+    borderBottomColor: '#EBF5FB',
   }
 });

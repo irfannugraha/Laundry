@@ -11,5 +11,10 @@ export default StyleSheet.create({
   },
   pemisahStyle: {
     borderBottomWidth: 0.5,
+  },
+  buttonStyle: {
+    height: 50,
+    borderRadius: 100,
+    margin: 10,
   }
 });

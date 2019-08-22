@@ -7,17 +7,13 @@ import firebase from 'firebase';
 class tungguKonfirmasi extends Component{
 
   static navigationOptions = {  
-    title: 'Cuci Baju',
+    header: null,
   }
 
   constructor() {
     super()
     this.state = {
-      pembayaran: [
-        'Mandiri m-banking',
-        'OVO',
-        'Hutang',
-      ],
+
     }
   }
 
@@ -31,11 +27,11 @@ class tungguKonfirmasi extends Component{
     return (
       <View style={{flex: 1}}>
         <View style={containerChild}>
-          <Text style={[textStyle, {fontSize: 70, color: 'orange'}]}>
+          <Text style={[textStyle, {fontSize: 70, color: '#2EC5CB'}]}>
             Terimakasih
           </Text>
           <Text style={[textStyle, {fontSize: 25}]}>
-            Silahkan tunggu konfirmasi dari kami
+            Silahkan tunggu pakaian anda selesai
           </Text>
         </View>
         <Button 

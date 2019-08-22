@@ -20,7 +20,7 @@ export default class cuciBaju extends Component{
       user: firebase.database().ref('user/'+ firebase.auth().currentUser.uid),
       loading: false,
 
-      id: 1,
+      id: 0,
       nama: '',
       alamat: '',
       no_hp: '',
@@ -66,6 +66,20 @@ export default class cuciBaju extends Component{
     })
   }
 
+  tanngalKeluar() {
+    const count = this.state.lama_pengiriman.split(' ');
+    let day = (parseInt(new Date().getDate()) + parseInt(count[0]));
+    let month = new Date().getMonth();
+    const listMaxDay = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    const listMonth = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des']
+    if (day > listMaxDay[new Date().getMonth()]) {
+      month = (parseInt(new Date().getMonth()) + 1);
+      day = day - listMaxDay[new Date().getMonth()];
+    }
+    const date = day + ' ' + listMonth[month] + ' ' + new Date().getFullYear() + ', ' + new Date().getHours() + ':' + new Date().getMinutes() + ' WIB';
+    return date;
+  }
+
   submit() {
     const { nama, alamat, no_hp, parfum, jenis_layanan, lama_pengiriman, keterangan } = this.state;
     this.setState({ error: '', loading: true });
@@ -87,9 +101,9 @@ export default class cuciBaju extends Component{
         lama_pengiriman: lama_pengiriman,
         keterangan: keterangan,
         tanggal_masuk: new Date().getDate() + ' ' + list[new Date().getMonth()] + ' ' + new Date().getFullYear() + ', ' + new Date().getHours() + ':' + new Date().getMinutes() + ' WIB',
+        tanggal_keluar: this.tanngalKeluar(),
         berat: '',
         harga: '',
-        tanggal_keluar: '',
         pakaian: {
           atasan: 0,
           bawahan: 0,
@@ -99,9 +113,9 @@ export default class cuciBaju extends Component{
           lainya: 0,
         }
       });
-      this.state.user.child('/bio/status').set({
-        idActive: this.state.id, 
-        ket: "driver"
+      this.state.user.child('/bio/status').update({
+        idActive: this.state.id+1,
+        ket: "driver",
       });
       this.props.navigation.navigate('driverBrangkat'); 
     }
@@ -142,6 +156,7 @@ export default class cuciBaju extends Component{
                 value={this.state.no_hp} 
                 onChangeText={(no_hp) => this.setState({no_hp})}
                 iconSource={require('../../icon/telephone.png')}
+                keyboardType={'phone-pad'}
               />
             </View>
             <View style={containerChild}>

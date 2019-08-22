@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 import styles from './pembayaranStyles';
-import Input from '../../Components/Input/Input';
 import Button from '../../Components/Button/Button';
 import firebase from 'firebase';
 import Table from '../../Components/Tabel/Tabel';
@@ -44,20 +43,23 @@ class pembayaran extends Component{
 
   onPress() {
     if(this.state.cara_pembayaran == 'TRANSFER'){
-      this.props.navigation.navigate('metodePembayaran'); 
+      this.props.navigation.navigate('metodePembayaran');
     }
     else if(this.state.cara_pembayaran == 'CASH'){
-      alert('MOHON MAAF!! dalam pembangunan');
+      this.props.navigation.navigate('tungguKonfirmasi');
     }else{
       alert('GOBLO');
     }
   }
 
   render() {
-    const { buttonStyle, containerChildStyle, textStyle, inputStyle } = styles;
+    const { buttonStyle, containerChildStyle, textStyle, } = styles;
 
     return (
       <View style={{flex: 1}}>
+        <Text style={{fontSize: 20, marginStart: 15, marginTop: 15}}>
+          Pakaian anda 
+        </Text>
         <Table
           data={this.state.jumlah}
           moreStyle={{height: 250, borderWidth: 1, borderColor: 'gainsboro'}}
@@ -70,15 +72,6 @@ class pembayaran extends Component{
               secondLabel='TRANSFER'
             />
           </View>
-          <View>
-            <Input 
-              moreStyle={inputStyle}
-              maxLength={5} 
-              placeholder={'Your Coupon Here'}
-              value={this.state.coupon}
-              onChangeText={(coupon) => this.setState({coupon})}
-            />
-          </View>
         </View>
         <View style={containerChildStyle}>
           <View style={textStyle}>
@@ -87,8 +80,8 @@ class pembayaran extends Component{
               <Text>
                 {this.state.harga.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.") }
                 {' / '} 
-                <Text style={{color: 'orange', fontSize: 15}}>
-                  {this.state.berat + 'kg'}
+                <Text style={{color: '#2EC5CB', fontSize: 18}}>
+                  {this.state.berat + ' kg'}
                 </Text>
               </Text>
             </Text>

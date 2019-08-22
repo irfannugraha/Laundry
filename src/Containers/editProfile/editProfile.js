@@ -18,7 +18,9 @@ export default class cuciBaju extends Component{
       user: firebase.database().ref('user/'+ firebase.auth().currentUser.uid),
       loading: false,
 
-      bio: {},
+      nama: '',
+      noHp: '',
+      alamat: '',
       email: '',
       password: '1234567890',
 
@@ -30,7 +32,9 @@ export default class cuciBaju extends Component{
   componentDidMount() {
     this.state.user.child('/bio').once('value', snapshot => {
       this.setState({
-        bio: snapshot.val(),
+        nama: snapshot.val().nama,
+        noHp: snapshot.val().noHp,
+        alamat: snapshot.val().alamat,
         email: firebase.auth().currentUser.email,
         loading: false,
       })
@@ -45,18 +49,18 @@ export default class cuciBaju extends Component{
   }
 
   submit() {
-    const {bio, email} = this.state;
+    const {nama, alamat, noHp, email} = this.state;
     this.setState({loading: true });
     
-    if(bio.nama== '' ||  bio.alamat== '' || bio.no_hp== '' || email== '')
+    if(nama== '' ||  alamat== '' || noHp== '' || email== '')
     {
       alert('lengkapi dokumen');
       this.setState({loading: false});
     }else{
       this.state.user.child('/bio').update({
-        nama: bio.nama,
-        alamat: bio.alamat,
-        no_hp: bio.no_hp,
+        nama: nama,
+        alamat: alamat,
+        noHp: noHp,
       });
       alert('Profil berhasil diperbarui')
       this.props.navigation.goBack(); 
@@ -92,26 +96,25 @@ export default class cuciBaju extends Component{
               <Input moreStyle={inputStyle} 
                 placeholder={'Nama baru'}
                 iconSource={require('../../icon/user.png')}
-                value={this.state.bio.nama}
+                value={this.state.nama}
                 onChangeText={(nama) => this.setState({nama})}
               />
               <Input moreStyle={inputStyle} 
-                placeholder={'Email baru'}
-                iconSource={require('../../icon/email.png')}
                 value={this.state.email}
+                iconSource={require('../../icon/email.png')}
                 editable={false}
-                onChangeText={(email) => this.setState({email})}
               />
               <Input moreStyle={inputStyle} 
                 placeholder={'No telpon baru'}
                 iconSource={require('../../icon/telephone.png')}
-                value={this.state.bio.noHp}
+                value={this.state.noHp}
                 onChangeText={(noHp) => this.setState({noHp})}
+                keyboardType={'phone-pad'}
               />
               <Input moreStyle={inputStyle} 
                 placeholder={'Alamat baru'}
                 iconSource={require('../../icon/pin.png')}
-                value={this.state.bio.alamat}
+                value={this.state.alamat}
                 onChangeText={(alamat) => this.setState({alamat})}
               />
               <View style={{borderBottomWidth: 0, 

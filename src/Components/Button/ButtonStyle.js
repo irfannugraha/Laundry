@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   styleContainer: {
-    backgroundColor: '#4556E7',
+    backgroundColor: '#2EC5CB',
   },
   textStytle:{
     fontSize: 20,
